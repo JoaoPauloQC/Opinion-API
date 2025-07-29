@@ -10,6 +10,7 @@ public class Opinion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String img;
     private String comment;
     private int rate;
     @Column(insertable = false,updatable = false)
@@ -17,6 +18,10 @@ public class Opinion {
 
     public Long getId() {
         return id;
+    }
+
+    public String getImg() {
+        return img;
     }
 
     public LocalDateTime getDate() {
@@ -45,5 +50,9 @@ public class Opinion {
 
     public void setRate(int rate) {
         this.rate = rate;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

@@ -30,6 +30,7 @@ public class OpinionController {
         Opinion opinion = new Opinion();
         opinion.setName(opinionRequest.getName());
         opinion.setComment(opinionRequest.getComment());
+        opinion.setImg(opinionRequest.getImg());
         opinion.setRate(opinionRequest.getRate());
         opinionRepository.save(opinion);
         return ResponseEntity.ok().build();
