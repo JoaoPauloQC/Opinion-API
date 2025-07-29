@@ -3,43 +3,50 @@ package com.joaop.opinions.Controller;
 import com.joaop.opinions.Models.Opinion;
 import com.joaop.opinions.Repository.OpinionRepository;
 import com.joaop.opinions.Requests.OpinionRequest;
+import com.joaop.opinions.Services.OpinionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/opinion")
 public class OpinionController {
 
-    OpinionRepository opinionRepository;
+    OpinionService opinionService;
 
-    public OpinionController (OpinionRepository opinionRepository){
-        this.opinionRepository = opinionRepository;
+    public OpinionController (OpinionService opinionService){
+        this.opinionService = opinionService;
     }
 
-    @GetMapping("/getbyid")
+    @GetMapping("/getall")
     public List<Opinion> getById (){
-        List<Opinion> opinions = opinionRepository.findAll();
+        List<Opinion> opinions = opinionService.gettingall();
 
         return opinions;
     }
 
-    @GetMapping ("/newOpinion")
+
+
+    @PostMapping ("/newOpinion")
     public ResponseEntity<Void> newOpinion (@RequestBody OpinionRequest opinionRequest){
-        Opinion opinion = new Opinion();
-        opinion.setName(opinionRequest.getName());
-        opinion.setComment(opinionRequest.getComment());
-        opinion.setImg(opinionRequest.getImg());
-        opinion.setRate(opinionRequest.getRate());
-        opinionRepository.save(opinion);
+        opinionService.newOpinion(opinionRequest);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletebyid (@PathVariable Long id){
-        opinionRepository.deleteById(id);
+        opinionService.deletingbyid(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/last")
+    public List<Opinion> gettingMaximum (@RequestParam Optional<Long> num ){
+        if (num.isPresent()){
+            return opinionService.getMaximum(num.get());
+        }
+        return opinionService.getMaximum(5L);
     }
 
 }
